@@ -12092,7 +12092,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[57]:</div>
+<div class="prompt input_prompt">In&nbsp;[121]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeRegressor</span>
@@ -12106,7 +12106,7 @@ div#notebook {
 <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">new_data</span><span class="p">,</span> <span class="n">new_y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
 
 <span class="c1"># TODO: Create a decision tree regressor and fit it to the training set</span>
-<span class="n">regressor</span> <span class="o">=</span> <span class="n">DecisionTreeRegressor</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">regressor</span> <span class="o">=</span> <span class="n">DecisionTreeRegressor</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 
 <span class="c1"># TODO: Report the score of the prediction using the testing set</span>
 <span class="n">score</span> <span class="o">=</span> <span class="n">regressor</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
@@ -12123,7 +12123,7 @@ div#notebook {
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>0.157665407772
+<pre>0.156275395017
 </pre>
 </div>
 </div>
@@ -14717,7 +14717,8 @@ KIqSMv8fleE3z1y+k70AAAAASUVORK5CYII=
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Answer:</strong> (Grocery, Detergents_Paper) and (Grocery, Milk) exhibit some degree of correlation in the respective order. This does confirm the suspicion that I had for the Grocery, Milk. As calculated earlier the score is not high and here in the scatter_matrix plot as well, this pair is second best correlating pair. From the scatter_matrix plot, the best pair is (Grocery, Detergents_Paper). (Grocery, Detergents_Paper) is linearly distributed fitting very closely to y = x line. All the data pairs are distributed in a skewed fashion.</p>
+<p><strong>Answer:</strong> (Grocery, Detergents_Paper) and (Grocery, Milk) exhibit some degree of correlation in the respective order. This does confirm the suspicion that I had for the Grocery, Milk. As calculated earlier the score is not high and here in the scatter_matrix plot as well, this pair is second best correlating pair. From the scatter_matrix plot, the best pair is (Grocery, Detergents_Paper).</p>
+<p>All the feature data is distributed in skewed fashion. They have to be normalized to make them normally distributed before applying the clustering algorithm.</p>
 
 </div>
 </div>
@@ -21749,13 +21750,11 @@ ZmZmZmZmZhXcaWRmZmZmZmZmZhX+C4ekwgGEmngSAAAAAElFTkSuQmCC
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong> The total variance explained by first and second principal component is 0.719 and first four principal components explain 0.9314 of data.</p>
-<p>The first four dimensions in terms of customer spending are as follows:</p>
-<ol>
-<li>Detergents_Paper.</li>
-<li>Fresh</li>
-<li>Delicatessen</li>
-<li>Frozen</li>
-</ol>
+<p>To analyze the principal components, I am considering Feature weights &gt; 0.5 as the criteria to decide important features in that dimension.</p>
+<p>The first principal component is strongly correlated with Detergents_Paper. It shows that first pricipal component increases with decrease in Detergents_Paper. Mostly detergents and papers will be sold highly to customers like Restaurants/Cafes/Hotel. Hence it will separate out all other customers from Restaurants/Cafes/Hotels.</p>
+<p>Second principal component is strongly correlated with three features - Fresh, Frozen and Delicatessen. The plot above shows that all three vary together. A customer who buys Fresh is very likely to buy Frozen and Delicatessen as well. This will separate out customers who buy these three items together from other customers.</p>
+<p>Third principal component is strongly correlatd with Fresh and Delicatessen. This principal component is directly proportional to Delicatessen but inversely proportional to Fresh. In other words, it represents customers who buy alot of Delicatessen but very less Fresh or a lot of Fresh but very less Delicatessen.</p>
+<p>Fourth principal component is strongly correlated with two features - Frozen and Delicatessen. This component is directly proportional to Frozen but inversely proportional to Delicatessen. It represents customers who buy a lot of Frozen but very less Delicatessen or vice versa</p>
 
 </div>
 </div>
@@ -23717,8 +23716,8 @@ YtJIkiRJkiRJlZg0kiRJkiRJUiUmjSRJkiRJklSJSSNJkiRJkiRVYtJIkiRJkiRJlfx/d89SLu+S
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong>
-K-means clustering algorithm always assigns a point to one and only one cluster. This is useful when we know that one data point cannot belog to multiple clusters.</p>
-<p>Gaussian Mixture Model is more flexible. It allows for mulitple membership of points to clusters. It is useful when there can be some hidden parameters.</p>
+K-means clustering algorithm always assigns a point to one and only one cluster. This is useful when we know that one data point cannot belog to multiple clusters. K-means clustering algorithm is a special type of Gaussian Mixture Model and hence it's faster.</p>
+<p>Gaussian Mixture Model is more flexible. It allows for mulitple membership of points to clusters. It is useful when there can be some hidden parameters. Gaussian Mixture Model is slower in speed in comparison to K-Means algorithm.</p>
 <p>Since we expect each of the customers to belong to a particular segment i would be inclined towards using k-means clustering.</p>
 
 </div>
@@ -25134,7 +25133,8 @@ nIAIAAAAoOMERAAAAAAd9/8D3MlDk3ac9woAAAAASUVORK5CYII=
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Answer:</strong> Customers belonging to Segment 0 are those customers who buy Milk, Grocery, Detergents_Paper and Delicatessen together. On the other hand, customers belonging to Segment 1 are those who buy Fresh and Frozen together.</p>
+<p><strong>Answer:</strong> Segment 0 has center at 4th quartile of Milk, Grocery, Detergents_Paper and 3rd quartile of Delicatessen. So, it represents those customer who buy all these four items together. An example could be Cafe.</p>
+<p>Segment 1 has center at 3rd quartile of Fresh and Frozen. So, this segment represent customers who buy these two items together. This could be a Retail customer.</p>
 
 </div>
 </div>
@@ -25226,7 +25226,13 @@ Sample point 2 predicted to be in Cluster 1
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Answer:</strong> Customer Segment 0 represents the customer who buy grocery items which are not needed on a daily basis. On the other hand, Customer segment 1 represents the customer who buy fresh/frozen items which are needed fresh and may be immediately. So, Customer Segment 0 will be fine with the change of delivery service from 5 days a week to 3 days a week. But, Customer segment 1 won't be happy with the above change.</p>
+<p><strong>Answer:</strong> Since company is planning to do A/B tests, it can do the following:</p>
+<ol>
+<li>Divide customer in each segments equally to Group A and Group B.</li>
+<li>Continue the service of 5 days a week to one of these group (say A) and change the service to 3 days a week to Group B.</li>
+<li>In Group B, see which customer segment is sensitive to the change. Let's say if Customer Segment 0 is insensitive to this change but Customer Segment 1 is or vice-versa then we know for whom we can change the service.</li>
+</ol>
+<p>Customer Segment 0 represents the customer who buy grocery items which are not needed on a daily basis. On the other hand, Customer segment 1 represents the customer who buy fresh/frozen items which are needed fresh and may be immediately. So, Customer Segment 0 will be fine with the change of delivery service from 5 days a week to 3 days a week. But, Customer segment 1 won't be happy with the above change.</p>
 
 </div>
 </div>
